@@ -23,5 +23,5 @@ plt.plot(x, np.sin(x));
 ```
 
 
-![png](test_notebook_files/test_notebook_3_0.png)
+![png](2017-07-17-test_notebook_files/2017-07-17-test_notebook_3_0.png)
 
