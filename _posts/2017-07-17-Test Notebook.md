@@ -1,4 +1,5 @@
 ---
+layout: post
 title: Publishing a Jupyter-notebook
 ---
 # Publishing a Jupyter-notebook
@@ -25,5 +26,5 @@ plt.plot(x, np.sin(x));
 ```
 
 
-![png](../assets/nbfiles/2017-07-17-test_notebook/2017-07-17-test_notebook_4_0.png)
+![png](../assets/nbfiles/2017-07-17-Test%20Notebook/2017-07-17-Test%20Notebook_4_0.png)
 
