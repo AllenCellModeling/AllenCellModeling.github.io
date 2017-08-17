@@ -1,4 +1,7 @@
-
+---
+layout: post
+title: Publishing a Jupyter-notebook
+---
 # Publishing a Jupyter-notebook
 
 We want to support most things we will do in a data story. Like display some math:
@@ -23,5 +26,5 @@ plt.plot(x, np.sin(x));
 ```
 
 
-![png](2017-07-17-test_notebook_files/2017-07-17-test_notebook_3_0.png)
+![png](2017-07-17-test_notebook_files/2017-07-17-test_notebook_4_0.png)
 
