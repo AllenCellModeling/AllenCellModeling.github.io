@@ -1,5 +1,4 @@
 ---
-layout: post
 title: Publishing a Jupyter-notebook
 ---
 # Publishing a Jupyter-notebook
