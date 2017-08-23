@@ -28,7 +28,11 @@
         {% endif %}
 
         {% if site.show_downloads %}
-        <a href="../assets/notebooks/{{ page.path.basename | replace:'.md','.ipynb' }}">Download <strong>Jupyter Notebook</strong></a>
+        <ul>
+            <li> 
+                <a href="../assets/notebooks/{{ page.path | remove_first: "_posts" | replace:'.md','.ipynb' }}">Download <strong>Jupyter Notebook</strong></a>
+            </li>
+        </ul>
         {% endif %}
       </header>
       <section>
