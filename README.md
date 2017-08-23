@@ -17,6 +17,6 @@ To add and display a new notebook as a page on the site:
 - put the .ipynb notebook in the `_posts` directory
 - convert the notebook to a markdown file using `jupyter nbconvert --to markdown --NbConvertApp.output_files_dir='../assets/nbfiles/{notebook_name}' --FilesWriter.relpath='({{ site.url }}/assets/nbfiles/' $NOTEBOOKNAME`
 	- this would create `2017-07-17-test_notebook.md` and `../assets/nbfiles/2017-07-17-test_notebook_files` in our example
--  move the .ipynb to ../_notebooks
+-  move the .ipynb to ../assets/notebooks
 
 The conversion and moving processes are scriptable for future improvement. 
