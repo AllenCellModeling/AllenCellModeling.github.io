@@ -3,20 +3,28 @@
 
 To add and display a new notebook as a page on the site:
 
-- make sure you have the figures sized as you want them to appear
-- add 'raw nbconvert' cell at the start of the notebook declaring the layout as post and the title of the post, e.g.
+## Things that you do to the notebook
+- Make sure you have the figures sized as you want them to appear
+- Add 'raw nbconvert' cell at the start of the notebook declaring the layout as post and the title of the post. This YAML front matter will be used to render the notebook's information on the index page, e.g.
 
 ```
-  ---
-  title: Publishing a Jupyter-notebook
-  summary: A short explanation to appear on the index page. 
-  ---
+---
+title: Publishing a Jupyter-notebook
+summary: A short explanation to appear on the index page. 
+---
 ```
-- title the notebook in the format `YEAR-MONTH-DAY-title` so that the file on disc is, e.g., `2017-08-17-test_notebook.ipynb`
-- pull from master 
-- put the .ipynb notebook in the `_posts` directory
-- convert the notebook to a markdown file using `jupyter nbconvert --to markdown --NbConvertApp.output_files_dir='../assets/nbfiles/{notebook_name}' --FilesWriter.relpath='({{ site.url }}/assets/nbfiles/' $NOTEBOOKNAME`
-	- this would create `2017-07-17-test_notebook.md` and `../assets/nbfiles/2017-07-17-test_notebook_files` in our example
--  move the .ipynb to ../assets/notebooks
+
+- Title the `.ipnb` file in the format `YEAR-MONTH-DAY-title` so that it becomes, e.g., `2017-08-17-test_notebook.ipynb`
+- Set the `$NOTEBOOKNAME` bash variable as in `NOTEBOOKNAME=2017-08-17-test_notebook.ipynb`
+
+## Things you do to the repo
+- Pull from master 
+- Put the `.ipynb` file in the `_posts` directory
+- Convert the notebook to a markdown file using 
+```
+jupyter nbconvert --to markdown --NbConvertApp.output_files_dir='../assets/nbfiles/{notebook_name}' --FilesWriter.relpath='({{ site.url }}/assets/nbfiles/' $NOTEBOOKNAME
+```
+- This creates a markdown file like `2017-07-17-test_notebook.md` and the related images in `../assets/nbfiles/2017-07-17-test_notebook_files`
+- Move the `.ipynb` to `../assets/notebooks`
 
 The conversion and moving processes are scriptable for future improvement. 
