@@ -1,7 +1,7 @@
-  ---
-  title: What shapes are our iPSCs? 
-  summary: A quick PCA of our cell and nuclear outlines. 
-  ---
+---
+title: What shapes are our iPSCs? 
+summary: A quick PCA of our cell and nuclear outlines. 
+---
 # What shapes are our iPSCs?
 
 One of the data products produced by the [Allen Inst for Cell Science](http://allencell.org/) is a large corpus of segmented cell and nuclear shapes. These are a necessary step in the isolation of individual cells from our [high-magnification fields of cells](http://cellviewer-1-1-0.allencell.org/client_service/?name=AICS-10_28&dim=3D&cellMaskOn=false). 
