@@ -3,7 +3,7 @@ title: Monte Carlo Integration
 summary: Working out a variation metric for the IC using monte carlo integration of a toy problem
 ---
 
-#Currently an unfinished rough draft
+# Currently an unfinished rough draft
 
 # toy 2D → 3D problem
 
