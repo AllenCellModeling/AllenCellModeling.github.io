@@ -19,7 +19,7 @@ seaborn.set_context('notebook')
 from tqdm import tqdm
 ```
 
-Let's load our cells and nuclei
+Let's load our cells and nuclei. You can get them [here](https://allencellmodeling.github.io/assets/data/20170919_cell_segmentations.npz) and [here](https://allencellmodeling.github.io/assets/data/20170919_nuclear_segmentations.npz) or `wget` them as described below.
 
 
 ```python
@@ -96,13 +96,12 @@ component_number = np.arange(len(cell_variance)) + 1
 # Plot variance
 fig, axes = plt.subplots(1, 2, figsize=(8,3), sharey=True)
 axes[0].plot(component_number, cell_variance)
-axes[0].set(ylim=(0,.5), 
+axes[0].set(ylim=(0,.6), 
             xlabel="n-components", 
             ylabel="Explained variance",
             title="Fraction of cell segmentation\nvariance captured")
 axes[1].plot(component_number, nuc_variance)
-axes[1].set(ylim=(0,.5), 
-            xlabel="n-components", 
+axes[1].set(xlabel="n-components", 
             title="Fraction of nuclear segmentation\nvariance captured")
 
 plt.tight_layout()
