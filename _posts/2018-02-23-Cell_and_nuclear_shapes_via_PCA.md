@@ -19,12 +19,12 @@ seaborn.set_context('notebook')
 from tqdm import tqdm
 ```
 
-Let's load our cells and nuclei. You can get them [here](https://allencellmodeling.github.io/assets/data/20170919_cell_segmentations.npz) and [here](https://allencellmodeling.github.io/assets/data/20170919_nuclear_segmentations.npz) or `wget` them as described below.
+Let's load our cells and nuclei. You can get them [here](https://github.com/AllenCellModeling/AllenCellModeling.github.io/raw/master/assets/data/20170919_cell_segmentations.npz) and [here](https://github.com/AllenCellModeling/AllenCellModeling.github.io/raw/master/assets/data/20170919_nuclear_segmentations.npz) or `wget` them as described below.
 
 
 ```python
-# wget https://allencellmodeling.github.io/assets/data/20170919_cell_segmentations.npz
-# wget https://allencellmodeling.github.io/assets/data/20170919_nuclear_segmentations.npz
+#!wget https://github.com/AllenCellModeling/AllenCellModeling.github.io/raw/master/assets/data/20170919_cell_segmentations.npz
+#!wget https://github.com/AllenCellModeling/AllenCellModeling.github.io/raw/master/assets/data/20170919_nuclear_segmentations.npz
 
 cells = np.load("20170919_cell_segmentations.npz")
 nucs = np.load("20170919_nuclear_segmentations.npz")
