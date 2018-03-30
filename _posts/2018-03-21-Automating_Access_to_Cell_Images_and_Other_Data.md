@@ -5,15 +5,15 @@ summary: Native python download and usage of Allen Institute for Cell Science im
 
 # Automating Access to Cell Images and Other Data
 
-Practicing open science implies that data should be made easily available and facile to re-use; accessible data is furthermore necessary for reproducible research. Replicating complex analysis environments has been made far easier with the [rise of containers](https://hub.docker.com/r/jupyter/datascience-notebook/). Methods for dealing with similarly complex data are only now emerging, but are poised to enable the distribution and versioning(!) of data sets.
+The [Allen Institute for Cell Science](http://allencell.org) wants our data to be more accessible to a variety of users: queryable, easier to download, easier to load into your development environment, and easier to separate into subsets. This accessibility and reproducibility of data sets is essential to the practice of open science. While such systems are mature for scientific code (e.g. Git and GitHub) and emerging for [development environments](https://hub.docker.com/r/jupyter/datascience-notebook/) (e.g. Docker and DockerHub), they are in their infancy for data sets. 
 
-The [Allen Institute for Cell Science](http://allencell.org) wants our data to be more accessible to a variety of users: queryable, easier to download, easier to load into your development environment, and easier to separate into subsets. One way we're doing that is by beginning to release our image sets via [Quilt](https://blog.quiltdata.com/data-packages-for-fast-reproducible-python-analysis-c74b78015c7f). This provides a `wget`-free mechanism, either from the command line or within Jupyter notebooks, to download and access images of individual cells, cell colonies, and associated metadata.
+We have made substantial inroads, via [Quilt](https://blog.quiltdata.com/data-packages-for-fast-reproducible-python-analysis-c74b78015c7f) into releasing our image and metadata sets in a versioned, reproducible, and open fashion. Ultimately this provides a `wget`-free mechanism, either from the command line or within Jupyter notebooks, to download and access images of individual cells, cell colonies, and associated metadata.
 
 Of significant interest to external users is the association of versionable metadata with image data. This allows both the association of an image's context with the image and also the updating of derived calculations that provide summary statistical information about their associated images.
 
 Here we'll explore the mechanisms for downloading and accessing our data through this system, but a systematic list of package contents is available on our [Quilt package pages](https://quiltdata.com/package/aics/). 
 
-Let's go into more detail on what this work will provide and why we're supporting the analysis stack we've chosen:
+Let's go into more detail on why we've settled on supporting the Jupyter ecosystem and how this work provides access to our data through it.
 
 ### Jupyter Notebooks let us:
 * Combine code and styled text so that we can develop models, take notes, and explain our work, as we go, in the same document.
@@ -28,9 +28,9 @@ Let's go into more detail on what this work will provide and why we're supportin
 ### Choosing Quilt
 Using Quilt, we can do all of the above. Let's explore the capabilities we've introduced by looking at our Tight Junction Protein, ZO1 (AICS-23) cell line. Further documentation of what this dataset contains and how it is structured is available on its [front page](https://quiltdata.com/package/aics/aics_23/), but this example will function as a quickstart guide.
 
-## Let's Get Started
+## A quick guide to accessing our data
 
-First, let's download our tight junction protein, ZO1 cell line package.
+Now we move into the technical tutorial. First, let's download our tight junction protein, ZO1 cell line package.
 
 
 ```python

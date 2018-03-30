@@ -4,9 +4,11 @@ summary: A quick PCA of our cell and nuclear outlines.
 ---
 # What shapes are our iPSCs?
 
+Cell morphology in general, and cell shape in particular, provide a readout of organizational and physiological cell state. In evaluating cell health or state, we frequently make inferences from the outline and texture of the cell's membrane. This is easy to do on a cell-by-cell basis but becomes substantially harder when confronted by a population of hundreds or thousands of cells. 
+
 One of the data products produced by the [Allen Inst for Cell Science](http://allencell.org/) is a large corpus of segmented cell and nuclear shapes. These are a necessary step in the isolation of individual cells from our [high-magnification fields of cells](http://cellviewer-1-1-0.allencell.org/client_service/?name=AICS-10_28&dim=3D&cellMaskOn=false). 
 
-These segmentations are appealingly simple to examine and suffer mostly from the fact that there are so many of them it is difficult to get a comprehensive overview. To help build intuition about cell shape, we'll take a look at a decomposition that breaks out variation along a couple of axes. 
+These segmentations are appealingly simple way to characterize cell shape, being nothing more than True/False (cell/not-cell) matrices. To help build intuition about cell shape across our population, let's take a look at a decomposition that tells us the mean cell shape and breaks out shape variation along a couple of axes. 
 
 
 ```python
