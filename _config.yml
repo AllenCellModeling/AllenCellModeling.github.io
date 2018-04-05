@@ -5,3 +5,6 @@ url: http://allencellmodeling.github.io
 show_notebook_downloads: true
 
 permalink: "/:year/:title"
+
+google-analytics:
+  id: "UA-48259954-3"
