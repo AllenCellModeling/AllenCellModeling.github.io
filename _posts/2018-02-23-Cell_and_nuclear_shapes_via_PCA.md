@@ -44,13 +44,13 @@ What do our cells look like? We'll need to define some plotting helper functions
 from mpl_toolkits.mplot3d import Axes3D
 from skimage import measure
 
-def plot_volume(volume, ax):
+def plot_volume(volume, ax, zoom=8):
     """Find the mesh for a segmentation and plot it as a surface"""
     verts, faces, normals, values = measure.marching_cubes_lewiner(volume)
     x, y, z = verts.T
     ax.plot_trisurf(x, y, faces, z, lw=0, cmap=plt.cm.Paired)
-    ax.set_axis_off()  # 
-    ax.dist = 8  # zoom in
+    ax.set_axis_off()  # look nice with no axes 
+    ax.dist = zoom     # how far from axis we want to be
     ax.set(aspect=1, facecolor="white")
 ```
 
@@ -187,8 +187,8 @@ fig, axes = plt.subplots(6, 4, figsize=(8,14), subplot_kw={"projection":"3d"})
 for i, row in enumerate(axes):
     plot_volume(cells_along_princ_comps[i][0], row[0])
     plot_volume(cells_along_princ_comps[i][1], row[1])
-    plot_volume(nucs_along_princ_comps[i][0], row[2])
-    plot_volume(nucs_along_princ_comps[i][1], row[3])
+    plot_volume(nucs_along_princ_comps[i][0], row[2], 14)
+    plot_volume(nucs_along_princ_comps[i][1], row[3], 14)
 
 ## Complicated labeling, simple versions don't work with 3d projections
 title_props = {'size':'x-large', 'horizontalalignment':'center'}
