@@ -6,4 +6,4 @@ show_notebook_downloads: true
 
 permalink: "/:year/:title"
 
-google-analytics: "UA-48259954-3"
+google-analytics: UA-482599543"
