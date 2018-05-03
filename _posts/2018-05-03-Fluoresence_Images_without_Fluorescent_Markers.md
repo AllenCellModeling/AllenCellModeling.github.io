@@ -57,14 +57,6 @@ This notebook runs well on [Google's Colaboratory Environment](https://drive.goo
 !pip install -q http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl
 ```
 
-    [33m  The script plasma_store is installed in '/content/.local/bin' which is not on PATH.
-      Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.[0m
-    [33m  The script tqdm is installed in '/content/.local/bin' which is not on PATH.
-      Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.[0m
-    [33m  The script quilt is installed in '/content/.local/bin' which is not on PATH.
-      Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.[0m
-
-
 
 ```python
 # First the standard packages
@@ -79,9 +71,6 @@ import tifffile
 ```
 
 
-    <matplotlib.figure.Figure at 0x7f05fbe4e160>
-
-
 With our environment set up, we can download sample images of our cell lines.
 
 
@@ -94,10 +83,6 @@ quilt.install('aics/cell_line_samples')
 from quilt.data.aics import cell_line_samples
 ```
 
-    Downloading package metadata...
-
-
-      0%|          | 0.00/1.73G [00:00<?, ?B/s]
 
     Downloading 10 fragments (1726844072 bytes before compression)...
 
@@ -147,8 +132,6 @@ What information does each of these channels contain?
 We've claimed that our model has learned how to predict the fluorescence channels from the bright-field image. Can we show that in action? Let's download and read in our model weights:
 
 
-
-
 ```python
 import torch
 import fnet # our implementation of u-net for fluorescent prediction
@@ -164,10 +147,6 @@ dna_model = fnet.fnet_model.Model()
 dna_model.load_state(dna_model_fn, gpu_ids=0)
 ```
 
-    Downloading package metadata...
-
-
-      0%|          | 0.00/1.69G [00:00<?, ?B/s]
 
     Downloading 18 fragments (1686753606 bytes before compression)...
 
@@ -190,8 +169,6 @@ small_brightfield = fnet.transforms.prep_ndarray(full_brightfield, dna_opts['tra
 model_input = fnet.transforms.ndarray_to_tensor(small_brightfield)
 ```
 
-    DEBUG: cropper shape change [64, 224, 336] becomes (64, 224, 336)
-
 
 Great! Our image is prepped; time to predict the DNA fluorescent dye image.
 
@@ -212,9 +189,6 @@ To compare the observed DNA fluorescent dye image with our predicted DNA fluores
 full_dna = img[:, channels['dna'],:,:]
 small_dna = fnet.transforms.prep_ndarray(full_dna, dna_opts['transform_signal'])
 ```
-
-    DEBUG: cropper shape change [64, 224, 336] becomes (64, 224, 336)
-
 
 
 ```python
@@ -252,10 +226,6 @@ imageio.mimsave('compare.gif', ordered_imgs, duration=2)
 with open('compare.gif', 'rb') as f:
   display(Image(data=f.read(), format='png'))
 ```
-
-    WARNING:root:Lossy conversion from float64 to uint8. Range [-0.48092584126614624, 25.98228094089669]. Convert image to uint8 prior to saving to suppress this warning.
-    WARNING:root:Lossy conversion from float32 to uint8. Range [-0.4203486442565918, 15.12682056427002]. Convert image to uint8 prior to saving to suppress this warning.
-
 
 
 ![png](../assets/nbfiles/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers_20_1.png)
@@ -375,17 +345,6 @@ for img_name in cell_line_samples._data_keys():
     prediction = predict_img(img, lamin_model, lamin_opts['transform_signal'])
     predictions[img_name] = prediction
 ```
-
-    DEBUG: cropper shape change [64, 224, 336] becomes (64, 224, 336)
-    DEBUG: cropper shape change [64, 224, 336] becomes (64, 224, 336)
-    DEBUG: cropper shape change [48, 224, 336] becomes (48, 224, 336)
-    DEBUG: cropper shape change [64, 224, 336] becomes (64, 224, 336)
-    DEBUG: cropper shape change [64, 224, 336] becomes (64, 224, 336)
-    DEBUG: cropper shape change [64, 224, 336] becomes (64, 224, 336)
-    DEBUG: cropper shape change [64, 224, 336] becomes (64, 224, 336)
-    DEBUG: cropper shape change [64, 224, 336] becomes (64, 224, 336)
-    DEBUG: cropper shape change [64, 224, 336] becomes (64, 224, 336)
-
 
 
 ```python
