@@ -6,3 +6,14 @@
 section {
     width: 800px;
 }
+
+.wrapper {
+    width: 1160px;
+    margin: 0 auto
+}
+
+@media print, screen and (max-width: 1260px) {
+    div.wrapper {
+        width: auto;
+        margin: 0
+}
