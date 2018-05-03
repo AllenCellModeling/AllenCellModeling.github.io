@@ -14,7 +14,7 @@ summary: A short explanation to appear on the index page.
 ---
 ```
 
-- Title the `.ipnb` file in the format `YEAR-MONTH-DAY-title` so that it becomes, e.g., `2017-08-17-test_notebook.ipynb`
+- Title the `.ipynb` file in the format `YEAR-MONTH-DAY-title` so that it becomes, e.g., `2017-08-17-test_notebook.ipynb`
 - Set the `$NOTEBOOKNAME` bash variable as in `NOTEBOOKNAME=2017-08-17-test_notebook.ipynb`
 
 ## Things you do to the repo
