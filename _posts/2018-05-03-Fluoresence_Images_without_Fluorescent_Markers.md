@@ -70,7 +70,6 @@ import scipy.ndimage
 import tifffile
 ```
 
-
 With our environment set up, we can download sample images of our cell lines.
 
 
@@ -82,13 +81,6 @@ quilt.install('aics/cell_line_samples')
 # Load the cell line samples dataset
 from quilt.data.aics import cell_line_samples
 ```
-
-
-    Downloading 10 fragments (1726844072 bytes before compression)...
-
-
-    100%|██████████| 1.73G/1.73G [01:21<00:00, 21.1MB/s]
-
 
 Let's take a look at the image we downloaded. Like all of the images in the `cell_line_samples` dataset, it is three dimensional. These images are captured at a series of heights, optically slicing the cell into a z-stack of images. When we display them, we'll take the maximum along the z-axis, the max project, since 3D rendering is hard. 
 
@@ -132,6 +124,8 @@ What information does each of these channels contain?
 We've claimed that our model has learned how to predict the fluorescence channels from the bright-field image. Can we show that in action? Let's download and read in our model weights:
 
 
+
+
 ```python
 import torch
 import fnet # our implementation of u-net for fluorescent prediction
@@ -147,13 +141,6 @@ dna_model = fnet.fnet_model.Model()
 dna_model.load_state(dna_model_fn, gpu_ids=0)
 ```
 
-
-    Downloading 18 fragments (1686753606 bytes before compression)...
-
-
-    100%|██████████| 1.69G/1.69G [01:21<00:00, 20.6MB/s]
-
-
 ### Predicting fluorescent images from brightfield images
 
 Now that our model is loaded, let's prepare the previously loaded image for use with our model.
@@ -168,7 +155,6 @@ dna_opts = json.load(open(label_free.dna.train_options()))
 small_brightfield = fnet.transforms.prep_ndarray(full_brightfield, dna_opts['transform_signal'])
 model_input = fnet.transforms.ndarray_to_tensor(small_brightfield)
 ```
-
 
 Great! Our image is prepped; time to predict the DNA fluorescent dye image.
 
@@ -226,6 +212,10 @@ imageio.mimsave('compare.gif', ordered_imgs, duration=2)
 with open('compare.gif', 'rb') as f:
   display(Image(data=f.read(), format='png'))
 ```
+
+    WARNING:root:Lossy conversion from float64 to uint8. Range [-0.48092584126614624, 25.98228094089669]. Convert image to uint8 prior to saving to suppress this warning.
+    WARNING:root:Lossy conversion from float32 to uint8. Range [-0.4203486442565918, 15.12682056427002]. Convert image to uint8 prior to saving to suppress this warning.
+
 
 
 ![png](../assets/nbfiles/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers_20_1.png)
