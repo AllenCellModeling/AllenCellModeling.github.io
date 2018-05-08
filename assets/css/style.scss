@@ -3,11 +3,19 @@
 
 @import "{{ site.theme }}";
 
-section {
-    width: 700px;
-    float: right;
-    padding: 30px;
-}
+// section {
+//     width: auto;
+//     float: right;
+//     padding: 30px;
+// }
+//
+// @media print, screen and (max-width: 1260px) {
+//     section {
+//         width: auto;
+//         float: none;
+//         padding: 30px;
+//     }
+// }
 
 p a {
     color: #39c;
@@ -31,14 +39,14 @@ p a:hover {
     transition:border-bottom .5s;
 }
 
-.wrapper {
-    width: 1160px;
-    margin: 0 50px;
-}
+// .wrapper {
+//     width: 1160px;
+//     margin: 0 50px;
+// }
 
-@media print, screen and (max-width: 1260px) {
-    .wrapper {
-        width: 90%;
-        margin: 0 5% 0 5%;
-    }
-}
+// @media print, screen and (max-width: 1260px) {
+//     .wrapper {
+//         width: 90%;
+//         margin: 0 5% 0 5%;
+//     }
+// }
