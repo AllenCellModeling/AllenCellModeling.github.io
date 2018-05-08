@@ -4,12 +4,14 @@
 @import "{{ site.theme }}";
 
 section {
-    width: auto;
+    width: 500px;
+    float: right;
+    padding: 50px;
 }
 
-@media print, screen and (min-width: 950px) {
+@media print, screen and (max-width: 950px) {
     section {
-        float: right;
+        width: auto;
         padding: 30px;
     }
 }
@@ -17,7 +19,7 @@ section {
 p a {
     color: #39c;
     text-decoration: none;
-    border-bottom: 2px solid transparent;
+    border-bottom: 1px solid transparent;
     -webkit-transition:border-bottom .5s;
     -moz-transition:border-bottom .5s;
     -ms-transition:border-bottom .5s;
@@ -28,7 +30,7 @@ p a {
 p a:hover {
     color: #069;
     font-weight: normal;
-    border-bottom: 2px solid #069;
+    border-bottom: 1px solid #069;
     -webkit-transition:border-bottom .5s;
     -moz-transition:border-bottom .5s;
     -ms-transition:border-bottom .5s;
