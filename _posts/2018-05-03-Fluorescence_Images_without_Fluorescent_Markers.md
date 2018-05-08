@@ -2,7 +2,7 @@
 title: Fluorescence Images without Fluorescent Markers
 summary: Using brightfield microscopy images to generate fluorescence marked images.
 ---
-# Fluorescence images without fluorescent markers
+# Fluorescence Images without Fluorescent Markers
 
 ## Background and motivation
 
@@ -31,13 +31,13 @@ A category of convolutional neural-net models, those based on the [U-net archite
 
 ### Our contributions
 
-We've trained such models on paired sets of our fluorescent images and the corresponding brightfield images. The details of our architecture and approach are described [https://www.biorxiv.org/content/early/2018/03/27/289504](in more detail in this pre-print), but let's take a look at how well structure prediction works, how close we are to being able to acquire fluorescence-like images without fluorescent markers.
+We've trained such models on paired sets of our fluorescent images and the corresponding brightfield images. The details of our architecture and approach are described [in more detail in this pre-print](https://www.biorxiv.org/content/early/2018/03/27/289504), but let's take a look at how well structure prediction works, how close we are to being able to acquire fluorescence-like images without fluorescent markers.
 
 ## Predicting fluorescence images from bright-field images
 
 ### Getting support packages, the model, and input images
 
-This notebook runs well on [Google's Colaboratory Environment](https://drive.google.com/file/d/1aXtGzmqXxKTrraVZu0eg7JBf9Zt4iFFE/view?usp=sharing), which gives you access to nice GPUs from your laptop, but we'll need to install some packages and get local copies of the trained model and some input images to test it on.
+This notebook runs well on [Google's Colaboratory Environment](https://drive.google.com/file/d/1aXtGzmqXxKTrraVZu0eg7JBf9Zt4iFFE/view?usp=sharing), which gives you access to nice GPUs from your laptop. We've also created a version to run this model across larger sets of images that allows you to [upload your own datasets](https://drive.google.com/file/d/1gIBqWhMCRxfX_NZgy_rAywEMh8QrpHQZ/view?usp=sharing). Before we begin in this environment however, we will need to install some packages and get local copies of the trained model and some input images to test it on.
 
 
 ```python
@@ -56,6 +56,8 @@ This notebook runs well on [Google's Colaboratory Environment](https://drive.goo
 # PyTorch to run the model 
 !pip install -q http://download.pytorch.org/whl/cu80/torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl
 ```
+
+After installing our packages we can now restart the runtime by viewing 'Runtime' options and then selecting 'Restart Runtime'.
 
 
 ```python
@@ -103,15 +105,15 @@ img = tifffile.imread(img_fn)
 channels = {'cell membrane':0, 'lamin':1, 'dna':2, 'bright-field':3}
 
 fig, axes = plt.subplots(1, 4, figsize=(14, 6))
-for channel, ax in zip(channels.items(), axes):
+for channel, ax in zip(channels.items(), axes.flat):
   channel_name, channel_index = channel
-  ax.set_title(channel_name)
+  ax.set_title(channel_name, fontsize=20)
   max_project(ax, img[:,channel_index])
 plt.tight_layout()
 ```
 
 
-![png](../assets/nbfiles/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers_9_0.png)
+![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_10_0.png)
 
 
 What information does each of these channels contain?
@@ -191,7 +193,7 @@ axes[1].axis('off');
 ```
 
 
-![png](../assets/nbfiles/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers_18_0.png)
+![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_19_0.png)
 
 
 ### Visualizing the difference between the observed and predicted images
@@ -208,17 +210,16 @@ import imageio
 
 ordered_imgs = [small_dna.max(0), predicted_dna.max(0)]
 imageio.mimsave('compare.gif', ordered_imgs, duration=2)
+```
 
+
+```python
 with open('compare.gif', 'rb') as f:
   display(Image(data=f.read(), format='png'))
 ```
 
-    WARNING:root:Lossy conversion from float64 to uint8. Range [-0.48092584126614624, 25.98228094089669]. Convert image to uint8 prior to saving to suppress this warning.
-    WARNING:root:Lossy conversion from float32 to uint8. Range [-0.4203486442565918, 15.12682056427002]. Convert image to uint8 prior to saving to suppress this warning.
 
-
-
-![png](../assets/nbfiles/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers_20_1.png)
+![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_22_0.png)
 
 
 To my eye this shows that our predictions are largely accurate in location, with some underprediction of the extent of the DNA dye uptake by the mitotic cell. Also of interest is that our predicted image is a bit smoother or less grainy than is the observed image. We can put this down to stochastic uptake of dye or dye clumping that the model is unable to predict.
@@ -231,9 +232,9 @@ What is the absolute difference between our observed image and our predicted ima
 dna_diff = abs(small_dna - predicted_dna)
 
 # Display the observed DNA, the predicted DNA, and their absolute difference
-images = {'observed': small_dna,
-          'difference': dna_diff,
-          'predicted': predicted_dna}
+images = {'Observed': small_dna,
+          'Difference': dna_diff,
+          'Predicted': predicted_dna}
 
 # Normalize the greyscale intensities by finding the max/min intensity of all
 max_gs = max([i.max(0).max(0).max(0) for l, i in images.items()])
@@ -248,7 +249,7 @@ for label, ax in zip(images.keys(), axes):
 ```
 
 
-![png](../assets/nbfiles/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers_22_0.png)
+![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_24_0.png)
 
 
 An ideal prediction would have a difference image that is completely empty (black).
@@ -281,14 +282,17 @@ for label, ax in zip(images.keys(), axes):
   ax.plot_surface(x, y, mag_sum, rstride=1, cstride=1, cmap=plt.cm.gray, linewidth=1)
   
   ax.set_zlim([0, max_gs])
-  ax.set_title('sum greyscale intensity\nacross z-stack of ' + label)
+  ax.set_title(label, fontsize=20, linespacing=3)
+  ax.set_xlabel('\nY', fontsize=20, linespacing=1.1)
+  ax.set_ylabel('\nX', fontsize=20, linespacing=3)
+  ax.set_zlabel('\n\n\nSum of\nGreyscale Intensity', fontsize=20)
   ax.xaxis.pane.set_edgecolor('black')
   ax.yaxis.pane.set_edgecolor('black')
   ax.set_facecolor((1.0, 1.0, 1.0, 1.0))
 ```
 
 
-![png](../assets/nbfiles/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers_25_0.png)
+![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_27_0.png)
 
 
 The middle surface plot would be completely flat for an ideal model. Note that the largest difference in intensity is at the mitotic cell, which is also where we have the largest intensity in the observed image. One of the other interesting things that pops out of this is the 'noise' overlaid on the error. The model is unable to predict what is likely detector noise.
@@ -347,8 +351,8 @@ for img_name, ax in zip(predictions.keys(), axes.flat):
 ```
 
 
-![png](../assets/nbfiles/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers/2018-05-03-Fluoresence_Images_without_Fluorescent_Markers_30_0.png)
+![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_32_0.png)
 
 
-What a nice way to get information from a brightfield image using patterns of structures we've seen in other images. We can see fluorescent structures in cells where we haven't even labeled them. It is hard to overstate how much this can improve the interpretability of large corpora of brightfield images in cases where we can do a little initial dying or labeling.
+What a nice way to get information from a brightfield image using patterns of structures we've seen in other images! We can see fluorescent structures in cells where we haven't even labeled them. In cases where we can do a little initial dying or labeling to train models of this type, this can drastically improve the interpretability of large sets of brightfield images.
 
