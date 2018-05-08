@@ -4,17 +4,17 @@
 @import "{{ site.theme }}";
 
 section {
-    width: 800px;
+    width: auto;
 }
 
 .wrapper {
     width: 1160px;
-    margin: 0 auto
+    margin: 0 50px;
 }
 
 @media print, screen and (max-width: 1260px) {
-    div.wrapper {
-        width: auto;
-        margin: 0
+    .wrapper {
+        width: 90%;
+        margin: 0 5% 0 5%;
     }
 }
