@@ -7,6 +7,18 @@ section {
     width: auto;
 }
 
+@media print, screen and (max-width: 950px) {
+    section {
+        float: right;
+        padding: 30px;
+    }
+}
+
+a:hover {
+    color: #069;
+    font-weight: normal;
+}
+
 .wrapper {
     width: 1160px;
     margin: 0 50px;
