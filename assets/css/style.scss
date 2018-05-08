@@ -3,50 +3,18 @@
 
 @import "{{ site.theme }}";
 
-// section {
-//     width: auto;
-//     float: right;
-//     padding: 30px;
-// }
-//
-// @media print, screen and (max-width: 1260px) {
-//     section {
-//         width: auto;
-//         float: none;
-//         padding: 30px;
-//     }
-// }
-
-p a {
-    color: #39c;
-    text-decoration: none;
-    border-bottom: 1px solid transparent;
-    -webkit-transition:border-bottom .5s;
-    -moz-transition:border-bottom .5s;
-    -ms-transition:border-bottom .5s;
-    -o-transition:border-bottom .5s;
-    transition:border-bottom .5s;
+section {
+    width: 800px;
 }
 
-p a:hover {
-    color: #069;
-    font-weight: normal;
-    border-bottom: 1px solid #069;
-    -webkit-transition:border-bottom .5s;
-    -moz-transition:border-bottom .5s;
-    -ms-transition:border-bottom .5s;
-    -o-transition:border-bottom .5s;
-    transition:border-bottom .5s;
+.wrapper {
+    width: 1160px;
+    margin: 0 auto
 }
 
-// .wrapper {
-//     width: 1160px;
-//     margin: 0 50px;
-// }
-
-// @media print, screen and (max-width: 1260px) {
-//     .wrapper {
-//         width: 90%;
-//         margin: 0 5% 0 5%;
-//     }
-// }
+@media print, screen and (max-width: 1260px) {
+    div.wrapper {
+        width: auto;
+        margin: 0
+    }
+}
