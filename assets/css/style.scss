@@ -7,16 +7,33 @@ section {
     width: auto;
 }
 
-@media print, screen and (max-width: 950px) {
+@media print, screen and (min-width: 950px) {
     section {
         float: right;
         padding: 30px;
     }
 }
 
-a:hover {
+p a {
+    color: #39c;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+    -webkit-transition:border-bottom .5s;
+    -moz-transition:border-bottom .5s;
+    -ms-transition:border-bottom .5s;
+    -o-transition:border-bottom .5s;
+    transition:border-bottom .5s;
+}
+
+p a:hover {
     color: #069;
     font-weight: normal;
+    border-bottom: 2px solid #069;
+    -webkit-transition:border-bottom .5s;
+    -moz-transition:border-bottom .5s;
+    -ms-transition:border-bottom .5s;
+    -o-transition:border-bottom .5s;
+    transition:border-bottom .5s;
 }
 
 .wrapper {
