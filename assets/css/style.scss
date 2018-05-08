@@ -4,13 +4,15 @@
 @import "{{ site.theme }}";
 
 section {
-    width: 500px;
-    padding: 50px;
+    width: 900px;
+    float: right;
+    padding: 30px;
 }
 
 @media print, screen and (max-width: 1060px) {
     section {
         width: auto;
+        position: static;
         padding: 30px;
     }
 }
