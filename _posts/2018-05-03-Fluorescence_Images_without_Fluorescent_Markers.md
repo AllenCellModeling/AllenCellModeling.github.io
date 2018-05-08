@@ -113,7 +113,7 @@ plt.tight_layout()
 ```
 
 
-![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_10_0.png)
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_10_0.png)
 
 
 What information does each of these channels contain?
@@ -193,7 +193,7 @@ axes[1].axis('off');
 ```
 
 
-![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_19_0.png)
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_19_0.png)
 
 
 ### Visualizing the difference between the observed and predicted images
@@ -219,7 +219,7 @@ with open('compare.gif', 'rb') as f:
 ```
 
 
-![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_22_0.png)
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_22_0.png)
 
 
 To my eye this shows that our predictions are largely accurate in location, with some underprediction of the extent of the DNA dye uptake by the mitotic cell. Also of interest is that our predicted image is a bit smoother or less grainy than is the observed image. We can put this down to stochastic uptake of dye or dye clumping that the model is unable to predict.
@@ -249,7 +249,7 @@ for label, ax in zip(images.keys(), axes):
 ```
 
 
-![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_24_0.png)
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_24_0.png)
 
 
 An ideal prediction would have a difference image that is completely empty (black).
@@ -292,7 +292,7 @@ for label, ax in zip(images.keys(), axes):
 ```
 
 
-![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_27_0.png)
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_27_0.png)
 
 
 The middle surface plot would be completely flat for an ideal model. Note that the largest difference in intensity is at the mitotic cell, which is also where we have the largest intensity in the observed image. One of the other interesting things that pops out of this is the 'noise' overlaid on the error. The model is unable to predict what is likely detector noise.
@@ -351,7 +351,7 @@ for img_name, ax in zip(predictions.keys(), axes.flat):
 ```
 
 
-![png](2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_files/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_32_0.png)
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_32_0.png)
 
 
 What a nice way to get information from a brightfield image using patterns of structures we've seen in other images! We can see fluorescent structures in cells where we haven't even labeled them. In cases where we can do a little initial dying or labeling to train models of this type, this can drastically improve the interpretability of large sets of brightfield images.
