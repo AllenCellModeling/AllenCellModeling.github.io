@@ -33,9 +33,9 @@ A category of convolutional neural-net models, those based on the [U-net archite
 
 We've trained such models on paired sets of our fluorescent images and the corresponding brightfield images. The details of our architecture and approach are described [in more detail in this pre-print](https://www.biorxiv.org/content/early/2018/03/27/289504), but let's take a look at how well structure prediction works, how close we are to being able to acquire fluorescence-like images without fluorescent markers.
 
-## Predicting fluorescence images from bright-field images
+## Predicting Fluorescence Images from Bright-field Images
 
-### Getting support packages, the model, and input images
+### Getting Support Packages, the Model, and Input Images
 
 This notebook runs well on [Google's Colaboratory Environment](https://drive.google.com/file/d/1aXtGzmqXxKTrraVZu0eg7JBf9Zt4iFFE/view?usp=sharing), which gives you access to nice GPUs from your laptop. We've also created a version to run this model across larger sets of images that allows you to [upload your own datasets](https://drive.google.com/file/d/1gIBqWhMCRxfX_NZgy_rAywEMh8QrpHQZ/view?usp=sharing). Before we begin in this environment however, we will need to install some packages and get local copies of the trained model and some input images to test it on.
 
@@ -143,7 +143,7 @@ dna_model = fnet.fnet_model.Model()
 dna_model.load_state(dna_model_fn, gpu_ids=0)
 ```
 
-### Predicting fluorescent images from brightfield images
+### Predicting Fluorescent Images from Brightfield Images
 
 Now that our model is loaded, let's prepare the previously loaded image for use with our model.
 
@@ -173,30 +173,50 @@ To compare the observed DNA fluorescent dye image with our predicted DNA fluores
 
 
 ```python
-# Two compare the two images, prep the original
+# To compare the two images, prep the original
 full_dna = img[:, channels['dna'],:,:]
 small_dna = fnet.transforms.prep_ndarray(full_dna, dna_opts['transform_signal'])
 ```
 
+Let's also prepare the images for display by normalizing and clipping outliers.
+
 
 ```python
-# Display the observed and the predicted
-fig, axes = plt.subplots(1, 2, figsize=(14,6))
+# Find the observed and predicted outlier cutoff points
+target_flat = small_dna.copy().flatten()
+min_px = np.percentile(target_flat, 0.02)
+max_px = np.percentile(target_flat, 99.8)
 
-axes[0].imshow(small_dna.max(0))
-axes[0].set_title('observed')
-axes[0].axis('off')
+# normalize and clip
+def prep_image_for_display(img, min_px, max_px, clip_lower=0, clip_upper=1):
+  img = img.copy() - min_px
+  img /= (max_px - min_px)
+  img[img < clip_lower] = clip_lower
+  img[img > clip_upper] = clip_upper
+  return img
 
-axes[1].imshow(predicted_dna.max(0))
-axes[1].set_title('predicted')
-axes[1].axis('off');
+display_obs = prep_image_for_display(small_dna, min_px, max_px)
+display_pred = prep_image_for_display(predicted_dna, min_px, max_px)
 ```
 
 
-![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_19_0.png)
+```python
+imgs = {'Observed': display_obs,
+       'Predicted': display_pred}
+
+# Display the observed and the predicted
+fig, axes = plt.subplots(1, len(imgs), figsize=(14,6))
+for label, ax in zip(imgs.keys(), axes.flat):
+  ax.imshow(imgs[label].max(0))
+  ax.set_title(label)
+  ax.axis('off')
+```
 
 
-### Visualizing the difference between the observed and predicted images
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_21_0.png)
+
+
+### Visualizing the Difference
 
 We'd like a better sense of how our prediction differs from the observed image than we can get from the above two images at a glance. Let's compare them in a couple of other ways. The simplest comparison is simply to toggle back and forth between the two images. This lets your eye pick out differences that aren't apparent when you have to move from one image to the next. 
 
@@ -208,7 +228,7 @@ This may be helpful in finding areas where our prediction is noticeably off.
 from IPython.display import Image
 import imageio
 
-ordered_imgs = [small_dna.max(0), predicted_dna.max(0)]
+ordered_imgs = [display_obs.max(0), display_pred.max(0)]
 imageio.mimsave('compare.gif', ordered_imgs, duration=2)
 ```
 
@@ -219,85 +239,113 @@ with open('compare.gif', 'rb') as f:
 ```
 
 
-![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_22_0.png)
-
-
-To my eye this shows that our predictions are largely accurate in location, with some underprediction of the extent of the DNA dye uptake by the mitotic cell. Also of interest is that our predicted image is a bit smoother or less grainy than is the observed image. We can put this down to stochastic uptake of dye or dye clumping that the model is unable to predict.
-
-What is the absolute difference between our observed image and our predicted image? Let's take a look: 
-
-
-```python
-# Absolute difference
-dna_diff = abs(small_dna - predicted_dna)
-
-# Display the observed DNA, the predicted DNA, and their absolute difference
-images = {'Observed': small_dna,
-          'Difference': dna_diff,
-          'Predicted': predicted_dna}
-
-# Normalize the greyscale intensities by finding the max/min intensity of all
-max_gs = max([i.max(0).max(0).max(0) for l, i in images.items()])
-min_gs = min([i.min(0).min(0).min(0) for l, i in images.items()])
-
-# Display the images with appropriate normalization
-fig, axes = plt.subplots(1, len(images), figsize=(18, 6))
-for label, ax in zip(images.keys(), axes):
-  ax.imshow(images[label].max(0), vmax=max_gs, vmin=min_gs)
-  ax.set_title(label)
-  ax.axis('off')
-```
-
-
 ![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_24_0.png)
 
 
-An ideal prediction would have a difference image that is completely empty (black).
+To my eye this shows that our predictions are largely accurate in location, with some underprediction of the extent of the DNA dye uptake by the mitotic cell. Also of interest is that our predicted image is a bit smoother or less grainy than the observed image. We can put this down to stochastic uptake of dye or dye clumping that the model is unable to predict.
 
-While our difference image indicates that we didn't predict exactly the same image as the observed image, this image also gives us more confidence that we are able to predict location reasonably well at first pass. Notably, visible error looks like it correleates with areas where the observed image has signal. This means we aren't getting the magnitude quite right, but we *are* getting the location of the fluorescence right.
-
-
-
-That emphasizes the relative accuracy in location of the fluorescent marker. But what about the intensity error? It is hard to get a sense of magnitude from a colorscale. To build intuition about error magnitude, let's look at the observed image, the difference, and the predicted image side-by-side with pixel intensity mapped to height in a surface plot.
+But how else can we visualize the location differences? Let's take a look: 
 
 
 ```python
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
+imgs = {'Observed - Predicted': small_dna - predicted_dna,
+       'Predicted - Observed': predicted_dna - small_dna,
+       'Absolute Difference': abs(small_dna - predicted_dna)}
 
-# Update the max greyscale by first taking the sum across z
-max_gs = max([i.sum(0).max(0).max(0) for l, i in images.items()])
+# Find the difference images outlier cut off points
+unified_flat = np.append(np.empty(0,), [imgs[l] for l in imgs]).flatten()
+min_px = np.percentile(unified_flat, 0.02)
+max_px = np.percentile(unified_flat, 99.8)
 
-# Plot each image by creating a mesh and setting the new z axis limits
-fig, axes = plt.subplots(1, len(images), figsize=(18,6), subplot_kw={'projection': '3d'})
-for label, ax in zip(images.keys(), axes):
-  x = np.arange(images[label].shape[2])
-  y = np.arange(images[label].shape[1])
-  x, y = np.meshgrid(y, x)
+fig, axes = plt.subplots(1, len(imgs), figsize=(14,10))
+for label, ax in zip(imgs.keys(), axes.flat):
+  display_img = prep_image_for_display(imgs[label], min_px, max_px)
+  ax.imshow(display_img.mean(0))
+  ax.set_title(label)
+  ax.axis('off')
 
-  mag_sum = np.sum(images[label], axis=0)
-  mag_sum = np.rollaxis(mag_sum, 1, 0)
-  mag_sum = scipy.ndimage.gaussian_filter(mag_sum, 1) #else single pixel error predominates
-
-  ax.plot_surface(x, y, mag_sum, rstride=1, cstride=1, cmap=plt.cm.gray, linewidth=1)
-  
-  ax.set_zlim([0, max_gs])
-  ax.set_title(label, fontsize=20, linespacing=3)
-  ax.set_xlabel('\nY', fontsize=20, linespacing=1.1)
-  ax.set_ylabel('\nX', fontsize=20, linespacing=3)
-  ax.set_zlabel('\n\n\nSum of\nGreyscale Intensity', fontsize=20)
-  ax.xaxis.pane.set_edgecolor('black')
-  ax.yaxis.pane.set_edgecolor('black')
-  ax.set_facecolor((1.0, 1.0, 1.0, 1.0))
+plt.tight_layout()
 ```
 
 
-![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_27_0.png)
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_26_0.png)
 
 
-The middle surface plot would be completely flat for an ideal model. Note that the largest difference in intensity is at the mitotic cell, which is also where we have the largest intensity in the observed image. One of the other interesting things that pops out of this is the 'noise' overlaid on the error. The model is unable to predict what is likely detector noise.
+**Observed - Predicted** provides us information on where we underpredict, and you can instantly see that we underpredict the mitotic the most out of all other cells present in the image.
 
-### Predicting structures not tagged
+**Predicted - Observed** gives context as to where we overpredict. Noticable here is that it looks as though we generally add noise to the image, even though in the displayed predicted image it looked as though we didn't. This is due to how the model was trained. Because the model cannot predict the random noise generated by fluorescence microscopy, it instead averages the spots where it thinks noise would be present.
+
+**Absolute Difference** shows us all the spots in a unified image of where our prediction was incorrect when compared to the observed. With largest difference being at the mitotic of course and all other points looking like they are mainly differences in greyscale intensity between the prediction and observed and not too many cell location differences.
+
+## Uses of Our Predictions
+
+In the small examples above we showed the relative location accuracy of our predictions and if you would like to learn more about the overall accuracy of our predictions we encourage you to read our paper. But what value can we gain from these predictions. We will first look at segmentation followed by predicting structures not tagged. 
+
+### Segmentation and Thresholding
+
+Segmentation is a large part of our pipeline so let's see how the observed fluorescence image compare to the predicted under a threshold.
+
+
+```python
+from skimage.filters import threshold_otsu
+
+thresh_obs = threshold_otsu(small_dna)
+binary_obs = small_dna > thresh_obs
+thresh_pred = threshold_otsu(predicted_dna)
+binary_pred = predicted_dna > thresh_pred
+
+imgs = {'Observed': display_obs,
+      'Predicted': display_pred,
+      'Binary Observed': binary_obs,
+      'Binary Predicted': binary_pred}
+
+fig, axes = plt.subplots(2, int(len(imgs) / 2), figsize=(14,10))
+for label, ax in zip(imgs.keys(), axes.flat):
+  ax.imshow(imgs[label].max(0))
+  ax.set_title(label)
+  ax.axis('off')
+
+plt.tight_layout()
+```
+
+
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_30_0.png)
+
+
+It was pretty intuitive that our predictions were generally 'smoother' and had less noise in the observed fluorescence but the thresholding shows how much noise was present in the original that is filtered out on the thresholded prediction.
+
+While we can continue on using the predicted image as a segmentation input itself we could also use the binary predicted image as a mask for the original to view a cleaned up, or de-noised original image. In short, let's use the binary predicted as a clipping mask for the original observed fluorescence image.
+
+
+```python
+# Use binary predicted as a clipping mask
+clipped_obs = small_dna.copy()
+clipped_flat = small_dna.flatten()
+clipped_obs[binary_pred==False] = min(clipped_flat)
+clipped_flat = clipped_obs.flatten()
+min_px = np.percentile(clipped_flat, 0.02)
+max_px = np.percentile(clipped_flat, 99.8)
+clipped_obs = prep_image_for_display(clipped_obs, min_px, max_px)
+
+imgs = {'Original Observed': display_obs,
+       'Clipped Observed': clipped_obs}
+
+fig, axes = plt.subplots(1, len(imgs), figsize=(14,10))
+for label, ax in zip(imgs.keys(), axes.flat):
+  ax.imshow(imgs[label].max(0))
+  ax.set_title(label)
+  ax.axis('off')
+
+plt.tight_layout()
+```
+
+
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_32_0.png)
+
+
+That looks much better! Being able to filter out some of the noise while still using the original observed fluorescence will be valuable in generating better segmentations and performing feature analysis.
+
+### Predicting Structures not Tagged
 
 These error plots give us some confidence in our ability to predict where DNA fluorescence will appear. We can plot simmilarly estimate error for our other tag models, but this is left as an exercise for the reader. Hard values for how well each of these models work are found in [the accompanying paper](https://www.biorxiv.org/content/early/2018/03/28/289504). 
 
@@ -351,7 +399,7 @@ for img_name, ax in zip(predictions.keys(), axes.flat):
 ```
 
 
-![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_32_0.png)
+![png](../assets/nbfiles/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers/2018-05-03-Fluorescence_Images_without_Fluorescent_Markers_37_0.png)
 
 
 What a nice way to get information from a brightfield image using patterns of structures we've seen in other images! We can see fluorescent structures in cells where we haven't even labeled them. In cases where we can do a little initial dying or labeling to train models of this type, this can drastically improve the interpretability of large sets of brightfield images.
